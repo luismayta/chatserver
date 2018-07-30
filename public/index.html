@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>WebChatServer test</title>
+    </head>
+    <body>
+    <div id="app">
+        <ul>
+            <li v-for="cmt in comments"> {{ cmt.Author + " : " + cmt.Val }}</li>
+        </ul>
+        <div><label>Name</label><input v-model="name"></div>
+        <div><label>Comment</label><input v-model="val"></div>
+        <button  @click="send">Send</button>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+
+     let ws = null;
+
+     let connection = {
+         initialize(){
+             let loc = window.location;
+             let urls = loc.href.split('/');
+             let id = urls[4];
+
+             let uri = 'ws:';
+             if (loc.protocol === 'https:'){
+                 uri = 'wss:';
+             }
+             uri += '//' + loc.host;
+             uri += '/chatws/' + id;
+             ws = new WebSocket(uri);
+
+             ws.onopen = () => {
+                 console.log('connected');
+             }
+
+             ws.onmessage = evt => {
+                 vm.comments.unshift(JSON.parse(evt.data));
+             }
+
+             ws.onclose = evt => {
+                 console.log(evt.code);
+                 setTimeout(connection.initialize, 100);
+             }
+         }
+     };
+
+     connection.initialize();
+
+     let vm = new Vue({
+         el : "#app",
+         data:{
+             name     : null,
+             val      : null,
+             comments : [],
+         },
+         methods : {
+             send(){
+                 ws.send(
+                     JSON.stringify({
+                         Author : this.name,
+                         Val    : this.val,
+                         Replys : []
+                     })
+                 );
+                 this.val  = "";
+             }
+         }
+     });
+    </script>
+    </body>
+</html>
