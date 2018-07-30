@@ -1,0 +1,5 @@
+package: chatserver
+import:
+- package: github.com/labstack/echo
+- package: github.com/labstack/echo/middleware
+- package: golang.org/x/net/websocket

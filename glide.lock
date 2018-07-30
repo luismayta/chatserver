@@ -1,0 +1,12 @@
+hash: 994a6178f58cfee6fcc735baf429d5ab3c460113a9c1de9f091cf0002e384c6b
+updated: 2018-07-30T05:16:55.1167637Z
+imports:
+- name: github.com/labstack/echo
+  version: 76d8adbf2d99ac0853008d8a97f5f21040a93e30
+  subpackages:
+  - middleware
+- name: golang.org/x/net
+  version: c4299a1a0d8524c11563db160fbf9bddbceadb21
+  subpackages:
+  - websocket
+testImports: []

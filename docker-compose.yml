@@ -1,0 +1,16 @@
+# Docker Compose
+# https://docs.docker.com/compose/
+# Usage: docker-compose up
+
+version: '3'
+services:
+
+  app:
+    ports:
+      - "8000:8000"
+    environment: &environment
+      - ENVIRONMENT=local
+    volumes:
+      - .:/go/src/github.com/luismayta/chatserver
+    env_file:
+      - .env
